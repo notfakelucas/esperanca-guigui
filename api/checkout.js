@@ -43,8 +43,8 @@ module.exports = async (req, res) => {
 
   if (email && email.includes('@')) body.payer.email = email;
 
-  const callbackUrl = process.env.XXPAY_CALLBACK_URL;
-  if (callbackUrl) body.callback_url = callbackUrl;
+  const callbackUrl = process.env.XXPAY_CALLBACK_URL || 'https://esperanca-guigui.vercel.app/api/webhook';
+  body.callback_url = callbackUrl;
 
   try {
     const xxpayRes = await fetch(`${XXPAY_BASE}/payments`, {

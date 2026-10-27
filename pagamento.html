@@ -742,7 +742,7 @@
                 eventSourceUrl: window.location.href
             };
 
-            fetch('checkout.php', {
+            fetch('/api/checkout', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -771,7 +771,7 @@
                             return;
                         }
 
-                        fetch('status.php?saleId=' + data.saleId)
+                        fetch('/api/status?id=' + data.saleId)
                         .then(res => res.json())
                         .then(statusData => {
                             if (statusData.status === 'paid') {

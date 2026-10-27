@@ -52,6 +52,11 @@ if ($email && strpos($email, '@') !== false) {
     $payload['payer']['email'] = $email;
 }
 
+$callbackUrl = defined('XXPAY_CALLBACK_URL') ? XXPAY_CALLBACK_URL : '';
+if ($callbackUrl) {
+    $payload['callback_url'] = $callbackUrl;
+}
+
 $ch = curl_init(XXPAY_BASE . '/payments');
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
