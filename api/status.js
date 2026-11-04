@@ -8,8 +8,8 @@ module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
 
-  const clientId = process.env.XXPAY_CLIENT_ID || 'xxc_tonmjbuod84pe5x43mnaazla7thk';
-  const clientSecret = process.env.XXPAY_CLIENT_SECRET || 'xxs_FzHZNUv6B5EDX7uyc4z3i4e1CAYisphIgUTLUfx3';
+  const clientId = process.env.XXPAY_CLIENT_ID || 'xxc_n6ahpk3i8zocyguimy5wsbvezkkb';
+  const clientSecret = process.env.XXPAY_CLIENT_SECRET || 'xxs_7dOcGaa6TvEW3nOoz5v07g8Gt8MH7WI1JhRcIoW0';
 
   if (!clientId || !clientSecret) {
     return res.status(500).json({ error: 'Erro de configuração.' });
