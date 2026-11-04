@@ -55,6 +55,7 @@ module.exports = async (req, res) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
         'X-Client-Id': clientId,
         'X-Client-Secret': clientSecret,
       },

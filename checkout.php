@@ -66,6 +66,7 @@ curl_setopt_array($ch, [
     CURLOPT_POSTFIELDS     => json_encode($payload),
     CURLOPT_HTTPHEADER     => [
         'Content-Type: application/json',
+        'Accept: application/json',
         'X-Client-Id: '     . XXPAY_CLIENT_ID,
         'X-Client-Secret: ' . XXPAY_CLIENT_SECRET,
     ],
