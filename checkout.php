@@ -18,36 +18,34 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $body = json_decode(file_get_contents('php://input'), true);
 
-$amount  = isset($body['amount'])  ? floatval($body['amount'])           : null;
-$phone   = isset($body['phone'])   ? preg_replace('/\s+/', '', $body['phone']) : '';
-$email   = isset($body['email'])   ? trim($body['email'])                : '';
-$nif     = isset($body['nif'])     ? trim($body['nif'])                  : '';
-$anon    = isset($body['anonymous']) ? (bool)$body['anonymous']          : true;
-$method  = isset($body['method'])  ? $body['method']                     : 'mbway';
+$amount    = isset($body['amount'])    ? floatval($body['amount'])                 : null;
+$phone     = isset($body['phone'])     ? preg_replace('/\s+/', '', $body['phone']) : '';
+$email     = isset($body['email'])     ? trim($body['email'])                      : '';
+$nif       = isset($body['nif'])       ? trim($body['nif'])                        : '';
+$anon      = isset($body['anonymous']) ? (bool)$body['anonymous']                : true;
+$returnUrl = isset($body['return_url']) ? trim($body['return_url'])               : '';
 
 if (!$amount || $amount <= 0) {
     echo json_encode(['success' => false, 'message' => 'Valor inválido.']);
     exit;
 }
-if (!preg_match('/^9\d{8}$/', $phone)) {
-    echo json_encode(['success' => false, 'message' => 'Número de telemóvel inválido.']);
-    exit;
-}
 
-$externalRef = 'espe-' . time() . '-' . substr(md5(uniqid()), 0, 5);
+$externalRef = 'revival-' . time() . '-' . substr(md5(uniqid()), 0, 5);
 
 $payload = [
     'amount'             => $amount,
     'currency'           => 'EUR',
-    'method'             => $method === 'mbway' ? 'mbway' : $method,
-    'description'        => 'Donativo Instituto Esperança',
+    'method'             => 'paypal',
+    'description'        => 'Donativo Revival Europa - Associação Cristã',
     'external_reference' => $externalRef,
     'payer'              => [
         'name'    => $anon ? 'Anónimo' : ($nif ?: 'Doador'),
-        'phone'   => '+351' . $phone,
         'country' => 'PT',
     ],
 ];
+if ($phone) {
+    $payload['payer']['phone'] = (strpos($phone, '+') === 0) ? $phone : ('+351' . $phone);
+}
 if ($email && strpos($email, '@') !== false) {
     $payload['payer']['email'] = $email;
 }
@@ -55,6 +53,10 @@ if ($email && strpos($email, '@') !== false) {
 $callbackUrl = defined('XXPAY_CALLBACK_URL') ? XXPAY_CALLBACK_URL : '';
 if ($callbackUrl) {
     $payload['callback_url'] = $callbackUrl;
+}
+
+if ($returnUrl) {
+    $payload['return_url'] = $returnUrl;
 }
 
 $ch = curl_init(XXPAY_BASE . '/payments');
@@ -88,8 +90,12 @@ if ($httpCode < 200 || $httpCode >= 300) {
     exit;
 }
 
+$redirectUrl = isset($data['next_action']['url']) ? $data['next_action']['url'] : null;
+
 echo json_encode([
-    'success' => true,
-    'message' => 'Verifica a tua app MB WAY e aprova o donativo.',
-    'saleId'  => $data['id'],
+    'success'     => true,
+    'message'     => 'Redirecionando para o PayPal...',
+    'saleId'      => $data['id'],
+    'redirectUrl' => $redirectUrl,
+    'next_action' => isset($data['next_action']) ? $data['next_action'] : null,
 ]);

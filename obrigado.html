@@ -299,9 +299,9 @@
             <div class="logo-wrapper">
                 <div class="logo-main">
                     <i class="fa-solid fa-hands-holding-child"></i>
-                    <span class="logo-title">Instituto Esperança</span>
+                    <span class="logo-title">Revival Europa</span>
                 </div>
-                <div class="logo-subtitle">APOIO • SAÚDE • ESPERANÇA</div>
+                <div class="logo-subtitle">Associação Cristã</div>
             </div>
         </header>
 
@@ -324,7 +324,7 @@
             <div class="receipt-row">
                 <span class="receipt-label">Método</span>
                 <div class="method-badge" id="method-badge-container">
-                    <img src="./mbway.png" alt="MB WAY" style="height: 40px;">
+                    <img src="./paypal.png" alt="PayPal" style="height: 35px;">
                 </div>
             </div>
         </div>
@@ -333,7 +333,7 @@
 
         <div class="trust-footer" style="position: relative; bottom: 0; margin-top: 40px;">
             <div class="logo">
-                <img src="logo.png" alt="Instituto Esperança" style="max-height: 30px;">
+                <img src="logo.png" alt="Revival Europa - Associação Cristã" style="max-height: 30px;">
             </div>
             <div class="text">Agradecemos profundamente pelo teu apoio às crianças.</div>
         </div>
@@ -344,14 +344,14 @@
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const amount = parseFloat(urlParams.get('amount') || '5');
-        const method = urlParams.get('method') || 'mbway';
+        const method = urlParams.get('method') || 'paypal';
 
         document.getElementById('amount-value').innerText = amount.toFixed(2).replace('.', ',') + ' €';
 
         if (method === 'multibanco') {
             document.getElementById('method-badge-container').innerHTML = '<img src="./multibanco-logo.svg" alt="Multibanco" style="height: 35px;">';
         } else {
-            document.getElementById('method-badge-container').innerHTML = '<img src="./mbway.png" alt="MB WAY" style="height: 40px;">';
+            document.getElementById('method-badge-container').innerHTML = '<img src="./paypal.png" alt="PayPal" style="height: 35px;">';
         }
 
         // Disparar Purchase no pixel browser

@@ -8,14 +8,14 @@ module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
 
-  const clientId = process.env.XXPAY_CLIENT_ID;
-  const clientSecret = process.env.XXPAY_CLIENT_SECRET;
+  const clientId = process.env.XXPAY_CLIENT_ID || 'xxc_tonmjbuod84pe5x43mnaazla7thk';
+  const clientSecret = process.env.XXPAY_CLIENT_SECRET || 'xxs_FzHZNUv6B5EDX7uyc4z3i4e1CAYisphIgUTLUfx3';
 
   if (!clientId || !clientSecret) {
     return res.status(500).json({ error: 'Erro de configuração.' });
   }
 
-  const { id } = req.query;
+  const id = req.query.id || req.query.saleId || req.query.payment;
   if (!id) return res.status(400).json({ error: 'id obrigatório' });
 
   try {

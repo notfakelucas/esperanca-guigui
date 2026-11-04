@@ -11,10 +11,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-$id = isset($_GET['saleId']) ? trim($_GET['saleId']) : '';
+$id = isset($_GET['saleId']) ? trim($_GET['saleId']) : (isset($_GET['id']) ? trim($_GET['id']) : (isset($_GET['payment']) ? trim($_GET['payment']) : ''));
 if (!$id) {
     http_response_code(400);
-    echo json_encode(['status' => 'pending', 'error' => 'saleId obrigatório']);
+    echo json_encode(['status' => 'pending', 'error' => 'id obrigatório']);
     exit;
 }
 
